@@ -5,12 +5,13 @@ Kernel folder - kernel.cpp is main kernel code\
 WHEN CHANGING KERNEL.CPP\
 COPY AND PASTE FOLLOWING CODE INSIDE TERMINAL WITH 511OS FOLDER OPEN IN TERMINAL\
 \
-nasm -f elf32 boot/boot.asm -o boot.o\
-i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -c kernel/kernel.cpp -o kernel.o\
-i686-elf-g++ -m32 -T linker.ld -ffreestanding -nostdlib -o kernel.elf boot.o kernel.o -lgcc\
-cp kernel.elf iso/boot/kernel.elf\
-i686-elf-grub-mkrescue -o 511OS.iso iso\
-qemu-system-i386 -cdrom 511OS.iso\
+nasm -f elf32 boot/boot.asm -o boot.o
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -c kernel/kernel.cpp -o kernel.o
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -c kernel/terminal.cpp -o terminal.o
+i686-elf-g++ -m32 -T linker.ld -ffreestanding -nostdlib -o kernel.elf boot.o kernel.o terminal.o -lgcc
+cp kernel.elf iso/boot/kernel.elf
+i686-elf-grub-mkrescue -o 511os.iso iso
+qemu-system-i386 -cdrom 511os.iso
 \
 This recompiles the code so it updates the changes\
 \
