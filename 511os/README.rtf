@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Place all files inside a single folder  - to run enter qemu-system-i386 -cdrom 511OS.iso in terminal\
+\
+Kernel folder - kernel.cpp is main kernel code\
+\
+WHEN CHANGING KERNEL.CPP\
+COPY AND PASTE FOLLOWING CODE INSIDE TERMINAL WITH 511OS FOLDER OPEN IN TERMINAL\
+\
+\
+nasm -f elf32 boot/boot.asm -o boot.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/kernel.cpp -o kernel.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/terminal.cpp -o terminal.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/idt.cpp -o idt.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/keyboard.cpp -o keyboard.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/syscall.cpp -o syscall.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/dividebyzero.cpp -o dividebyzero.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/doublefault.cpp -o doublefault.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/invalidopcode.cpp -o invalidopcode.o &&\
+i686-elf-g++ -m32 -ffreestanding -fno-exceptions -fno-rtti -fno-pie -fno-pic -c kernel/timer.cpp -o timer.o &&\
+i686-elf-g++ -m32 -T linker.ld -ffreestanding -nostdlib -no-pie -o kernel.elf boot.o kernel.o terminal.o idt.o keyboard.o syscall.o dividebyzero.o doublefault.o invalidopcode.o timer.o -lgcc &&\
+cp kernel.elf iso/boot/kernel.elf &&\
+i686-elf-grub-mkrescue -o 511os.iso iso &&\
+qemu-system-i386 -cdrom 511os.iso -boot d -display curses\
+\
+\
+This recompiles the code so it updates the changes\
+\
+(Will work on getting a script to run so we don\'92t have to enter this every time)\
+(For windows it might work differently)}
